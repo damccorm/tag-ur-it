@@ -1,0 +1,2 @@
+# never checkin env secrets
+.env

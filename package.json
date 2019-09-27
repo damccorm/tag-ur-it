@@ -1,0 +1,58 @@
+{
+  "name": "tag-ur-it",
+  "version": "1.0.0",
+  "description": "Bot to automatically tag issues",
+  "author": "Bryan MacFarlane <bryanmacf@gmail.com> (https://github.com/bryanmacfarlane)",
+  "license": "ISC",
+  "repository": "https://github.com//tag-ur-it.git",
+  "homepage": "https://github.com//tag-ur-it",
+  "bugs": "https://github.com//tag-ur-it/issues",
+  "keywords": [
+    "probot",
+    "github",
+    "probot-app"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon --exec \"npm start\"",
+    "start": "probot run ./lib/index.js",
+    "lint": "standard **/*.ts --fix",
+    "test": "jest",
+    "test:watch": "jest --watch --notify --notifyMode=change --coverage"
+  },
+  "dependencies": {
+    "@actions/core": "^1.1.1",
+    "@actions/github": "^1.1.0",
+    "@types/nock": "^9.3.0",
+    "js-yaml": "^3.12.1",
+    "nock": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.1.5",
+    "@types/js-yaml": "^3.12.0",
+    "@types/node": "^10.5.2",
+    "eslint-plugin-typescript": "^0.12.0",
+    "jest": "^23.4.0",
+    "nodemon": "^1.17.2",
+    "smee-client": "^1.0.2",
+    "standard": "^10.0.3",
+    "ts-jest": "^23.0.0",
+    "typescript": "^3.5.1",
+    "typescript-eslint-parser": "^18.0.0"
+  },
+  "engines": {
+    "node": ">= 8.3.0"
+  },
+  "standard": {
+    "parser": "typescript-eslint-parser",
+    "env": [
+      "jest"
+    ],
+    "plugins": [
+      "typescript"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}

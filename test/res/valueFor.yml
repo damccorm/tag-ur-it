@@ -1,0 +1,18 @@
+
+# primary rules
+rules:
+# both
+- valueFor: 'Item'
+  contains: 'Foo'
+  addLabels: ['Area: Foo']
+  assign: ['Bob']
+# just addTags
+- valueFor: 'Item'
+  equals: 'Bar'
+  addLabels: ['Area: Bar']
+#just assign
+- valueFor: 'Item'
+  equals: 'Baz'
+  assign: ['John']
+
+

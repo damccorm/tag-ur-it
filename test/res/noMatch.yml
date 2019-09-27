@@ -1,0 +1,11 @@
+# runs if first set had no matches
+# add likely teams to look at based on text searches
+nomatches:
+- contains: 'Xcode' 
+  addLabels: ['Area: Cross Platform']
+- contains: 'Azure' 
+  addLabels: ['Area: Release']
+- contains: 'Bash' 
+  addLabels: ['Area: Core']
+- matches: 'todoRegEx here'
+  addLabels: []
