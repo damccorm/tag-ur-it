@@ -10,9 +10,9 @@ rules:
   contains: Feature
   addLabels: ['enhancement']
 - valueFor: '**Assign to damccorm**' # If user specifies "**Assign to damccorm**: yes", it will get labeled with "damccorms problem now" and assigned to "@damccorm"
-   contains: yes
-   addLabels: ['damccorms problem now']
-   assign: ['damccorm']
+  contains: yes
+  addLabels: ['damccorms problem now']
+  assign: ['damccorm']
 
 # List of secondary rules to run if no matches detected in primary rules
 nomatches:
