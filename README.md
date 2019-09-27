@@ -56,13 +56,13 @@ rules:
   contains: Feature
   addLabels: ['enhancement']
 - valueFor: '**Assign to damccorm**' # If user specifies "**Assign to damccorm**: yes", it will get labeled with "damccorms problem now" and assigned to "@damccorm"
-   contains: yes
-   addLabels: ['damccorms problem now']
-   assign: ['damccorm']
+  contains: yes
+  addLabels: ['damccorms problem now']
+  assign: ['damccorm']
 
 # List of secondary rules to run if no matches detected in primary rules
 nomatches:
-- contains: 'damccorm' # Checks the entire issue for a substring match of damccorm. If one is found, adds labels "damccorms problem now" and "maybe?", and assigns to "@damccorm"
+- contains: 'this should get assigned to damccorm' # Checks the entire issue for a substring match. If one is found, adds labels "damccorms problem now" and "maybe?", and assigns to "@damccorm"
   addLabels: ['damccorms problem now', 'maybe?']
   assign: ['damccorm']
 
