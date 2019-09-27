@@ -22,6 +22,7 @@ async function run() {
 
     try {
       if (!fileContents) {
+        console.log('No file contents found in the rules file.')
         return;
       }
 
@@ -46,6 +47,20 @@ async function run() {
         }
 
         eng.processTags(results.labelsToAdd, issueRules.tags);
+
+        if (results.labelsToAdd.length > 0) {
+          console.log('Adding labels', JSON.stringify(results.labelsToAdd));
+        }
+        else {
+          console.log('No labels to add');
+        }
+
+        if (results.assigneesToAdd.length > 0) {
+          console.log('Adding assignees', JSON.stringify(results.assigneesToAdd));
+        }
+        else {
+          console.log('No assignees to add');
+        }
 
         let labels: string[] = [];
         issue.labels.forEach((label: any) => {
