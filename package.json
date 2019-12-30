@@ -24,7 +24,7 @@
     "@actions/core": "^1.1.1",
     "@actions/github": "^1.1.0",
     "@types/nock": "^9.3.0",
-    "js-yaml": "^3.12.1",
+    "js-yaml": "^3.13.1",
     "nock": "^10.0.0"
   },
   "devDependencies": {
