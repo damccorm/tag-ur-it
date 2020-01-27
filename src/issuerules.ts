@@ -79,35 +79,41 @@ export class RuleEngine {
     results.assigneesToAdd = [];
 
     this._valueForMap = {};
-    for (let i=0; i < rules.length; i++) {
-      let key: string | undefined = rules[i].valueFor;
-      if (key) {
-        this._valueForMap[key.toUpperCase()] = true;
+    if (rules) {
+      for (let i=0; i < rules.length; i++) {
+        let key: string | undefined = rules[i].valueFor;
+        if (key) {
+          this._valueForMap[key.toUpperCase()] = true;
+        }
       }
-    }  
+    }
 
     let lines: string[] = splitLines(issueContents);
-    for (let i=0; i < lines.length; i++) {
-      let lr = this.processRulesForLine(lines[i], rules);
-      if (lr.labelsToAdd.length == 0 && lr.assigneesToAdd.length == 0) {
-        lr = this.processContentRulesForLine(lines[i], rules);
-      }
+    if (lines) {
+      for (let i=0; i < lines.length; i++) {
+        let lr = this.processRulesForLine(lines[i], rules);
+        if (lr.labelsToAdd.length == 0 && lr.assigneesToAdd.length == 0) {
+          lr = this.processContentRulesForLine(lines[i], rules);
+        }
 
-      this.pushValues(results.labelsToAdd, lr.labelsToAdd);
-      this.pushValues(results.assigneesToAdd, lr.assigneesToAdd);      
+        this.pushValues(results.labelsToAdd, lr.labelsToAdd);
+        this.pushValues(results.assigneesToAdd, lr.assigneesToAdd);      
+      }
     }
 
     return results;
   }
 
   public processTags(tags: string[], tagRules: ITagsRule[]) {
-    for(let i = 0; i < tagRules.length; i++) {
-      let rule: ITagsRule = tagRules[i];
-      if (rule.noneIn) {
-        this.addIfNoneIn(rule.addLabels, rule.noneIn, tags);
-      }
-      else if (rule.noneMatch) {
-        this.addIfNoneMatch(rule.addLabels, rule.noneMatch, tags);
+    if (tagRules) {
+      for(let i = 0; i < tagRules.length; i++) {
+        let rule: ITagsRule = tagRules[i];
+        if (rule.noneIn) {
+          this.addIfNoneIn(rule.addLabels, rule.noneIn, tags);
+        }
+        else if (rule.noneMatch) {
+          this.addIfNoneMatch(rule.addLabels, rule.noneMatch, tags);
+        }
       }
     }
   }
@@ -115,10 +121,12 @@ export class RuleEngine {
   public addIfNoneIn(add:string[], ifNone: string[], inTags: string[]) {
     let found: boolean = false;
 
-    for (let i = 0; i < ifNone.length; i++) {
-      if (inTags.indexOf(ifNone[i]) >= 0) {
-        found = true;
-        break;
+    if (ifNone) {
+      for (let i = 0; i < ifNone.length; i++) {
+        if (inTags.indexOf(ifNone[i]) >= 0) {
+          found = true;
+          break;
+        }
       }
     }
 
@@ -131,10 +139,12 @@ export class RuleEngine {
     let found: boolean = false;
     //let regex = new RegExp(ifNoneMatch, "i");
 
-    for (let i = 0; i < inTags.length; i++) {
-      if (inTags[i].match(ifNoneMatch)) {
-        found = true;
-        break;
+    if (inTags) {
+      for (let i = 0; i < inTags.length; i++) {
+        if (inTags[i].match(ifNoneMatch)) {
+          found = true;
+          break;
+        }
       }
     }
 
@@ -158,21 +168,23 @@ export class RuleEngine {
       // only process this line against all rules if key is in any rule (n^2)
       if (this._valueForMap[key.toUpperCase()] == true) {
         let value = line.substr(ci+1).trim().toUpperCase();
+        
+        if (rules) {
+          for (let i = 0; i < rules.length; i++) {
+            let match: boolean = false;
+            let rule: IIssueRule = rules[i];
+            if (rule.equals && rule.equals.toUpperCase() === value) {
+              match = true;
+            }
+            
+            if (rule.contains && value.indexOf(rule.contains.toUpperCase()) >= 0) {
+              match = true;
+            }
 
-        for (let i = 0; i < rules.length; i++) {
-          let match: boolean = false;
-          let rule: IIssueRule = rules[i];
-          if (rule.equals && rule.equals.toUpperCase() === value) {
-            match = true;
-          }
-          
-          if (rule.contains && value.indexOf(rule.contains.toUpperCase()) >= 0) {
-            match = true;
-          }
-
-          if (match) {
-            this.pushValues(results.labelsToAdd, rule.addLabels);
-            this.pushValues(results.assigneesToAdd, rule.assign);
+            if (match) {
+              this.pushValues(results.labelsToAdd, rule.addLabels);
+              this.pushValues(results.assigneesToAdd, rule.assign);
+            }
           }
         }
       }
@@ -188,17 +200,19 @@ export class RuleEngine {
     
     line = line.trim();
 
-    for (let i = 0; i < rules.length; i++) {
-      let match: boolean = false;
-      let rule: IIssueRule = rules[i];
+    if (rules) {
+      for (let i = 0; i < rules.length; i++) {
+        let match: boolean = false;
+        let rule: IIssueRule = rules[i];
 
-      if (!rule.valueFor && rule.contains && line.toUpperCase().indexOf(rule.contains.toUpperCase()) >= 0) {
-        match = true;
-      }
+        if (!rule.valueFor && rule.contains && line.toUpperCase().indexOf(rule.contains.toUpperCase()) >= 0) {
+          match = true;
+        }
 
-      if (match) {
-        this.pushValues(results.labelsToAdd, rule.addLabels);
-        this.pushValues(results.assigneesToAdd, rule.assign);
+        if (match) {
+          this.pushValues(results.labelsToAdd, rule.addLabels);
+          this.pushValues(results.assigneesToAdd, rule.assign);
+        }
       }
     }
 
@@ -207,9 +221,11 @@ export class RuleEngine {
   
   private pushValues(arr: string[], values: string[]) {
     if (values) {
-      for (let i=0; i<values.length; i++) {
-        if (values[i] && arr.indexOf(values[i]) < 0) {
-          arr.push(values[i]);
+      if (values) {
+        for (let i=0; i<values.length; i++) {
+          if (values[i] && arr.indexOf(values[i]) < 0) {
+            arr.push(values[i]);
+          }
         }
       }
     }
