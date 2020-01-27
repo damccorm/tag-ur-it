@@ -1,6 +1,9 @@
 name: 'tag-ur-it'
 description: 'Label and assign issues based on their contents'
 author: 'damccorm'
+branding:
+  icon: 'at-sign'
+  color: 'blue'
 inputs: 
   repo-token:
     description: 'The GITHUB_TOKEN secret'
