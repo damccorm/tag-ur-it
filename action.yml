@@ -1,6 +1,6 @@
-name: 'Pull Request Labeler'
-description: 'Label pull requests by files altered'
-author: 'GitHub'
+name: 'tag-ur-it'
+description: 'Label and assign issues based on their contents'
+author: 'damccorm'
 inputs: 
   repo-token:
     description: 'The GITHUB_TOKEN secret'
